@@ -31,6 +31,26 @@ islemkontrol();
 
             <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
 
+                <?php
+
+                if ($_GET['durum'] == "hata") { ?>
+
+                    <div class="alert alert-danger">
+                        <strong>Hata!</strong> Güncelleme yapılamadı.
+                    </div>
+
+                <?php } elseif ($_GET['durum'] == "ok") { ?>
+
+                    <div class="alert alert-success">
+                        <strong>Bilgi!</strong> Değişiklik tamamlandı.
+                    </div>
+                <?php  } else {
+                    # code...
+                }
+
+
+
+                ?>
 
 
 
@@ -40,26 +60,6 @@ islemkontrol();
                         <div class="tab-pane fade active in" id="Personal">
                             <h2 class="title-section">Hesap Bilgilerimi Düzenle</h2>
                             <div class="personal-info inner-page-padding">
-                                <?php
-
-                                if ($_GET['durum'] == "hata") { ?>
-
-                                    <div class="alert alert-danger">
-                                        <strong>Hata!</strong> Güncelleme yapılamadı.
-                                    </div>
-
-                                <?php } elseif ($_GET['durum'] == "ok") { ?>
-
-                                    <div class="alert alert-success">
-                                        <strong>Bilgi!</strong> Değişiklik tamamlandı.
-                                    </div>
-                                <?php  } else {
-                                    # code...
-                                }
-
-
-
-                                ?>
 
 
                                 <div class="form-group ">

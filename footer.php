@@ -112,6 +112,10 @@
   <!-- Gridrotator js -->
   <script src="js\jquery.gridrotator.js" type="text/javascript"></script>
 
+  <!-- Select2 Js -->
+  <script src="js\select2.min.js" type="text/javascript"></script>
+
+
   <!-- Custom Js -->
   <script src="js\main.js" type="text/javascript"></script>
 

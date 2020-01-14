@@ -102,6 +102,8 @@ if (isset($_SESSION['userkullanici_mail'])) {
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="css\select2.min.css">
 
     <!-- Modernizr Js -->
     <script src="js\modernizr-2.8.3.min.js"></script>

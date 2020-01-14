@@ -74,14 +74,17 @@ if (isset($_POST['musterikaydet'])) {
 
 
                     header("Location:../../login.php?durum=kayitok");
+                    exit;
                 } else {
 
 
                     header("Location:../../register.php?durum=basarisiz");
+                    exit;
                 }
             } else {
 
                 header("Location:../../register.php?durum=mukerrerkayit");
+                exit;
             }
 
 
@@ -95,12 +98,14 @@ if (isset($_POST['musterikaydet'])) {
 
 
             header("Location:../../register.php?durum=eksiksifre");
+            exit;
         }
     } else {
 
 
 
         header("Location:../../register.php?durum=farklisifre");
+        exit;
     }
 }
 
@@ -137,7 +142,8 @@ if (isset($_POST['musterigiris'])) {
     } else {
 
 
-        header("Location:../../login?durum=hata");
+        header("Location:../../login.php?durum=hata");
+        exit;
     }
 }
 
@@ -170,7 +176,173 @@ WHERE kullanici_id={$_SESSION['userkullanici_id']}");
 
     if ($update) {
         Header("Location:../../hesabim.php?durum=ok");
+        exit;
     } else {
         Header("Location:../../hesabim.php?durum=hata");
+        exit;
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+
+
+if (isset($_POST['musteriadresguncelle'])) {
+
+
+
+
+    $kullaniciguncelle = $db->prepare("UPDATE kullanici SET
+
+
+kullanici_tip=:kullanici_tip,
+kullanici_tc=:kullanici_tc,
+kullanici_unvan=:kullanici_unvan,
+kullanici_vdaire=:kullanici_vdaire,
+kullanici_vno=:kullanici_vno,
+kullanici_adres=:kullanici_adres,
+kullanici_il=:kullanici_il,
+kullanici_ilce=:kullanici_ilce
+
+WHERE kullanici_id={$_SESSION['userkullanici_id']}");
+
+    $update = $kullaniciguncelle->execute(array(
+
+
+        'kullanici_tip' => htmlspecialchars($_POST['kullanici_tip']),
+        'kullanici_tc' => htmlspecialchars($_POST['kullanici_tc']),
+        'kullanici_unvan' => htmlspecialchars($_POST['kullanici_unvan']),
+        'kullanici_vdaire' => htmlspecialchars($_POST['kullanici_vdaire']),
+        'kullanici_vno' => htmlspecialchars($_POST['kullanici_vno']),
+        'kullanici_adres' => htmlspecialchars($_POST['kullanici_adres']),
+        'kullanici_il' => htmlspecialchars($_POST['kullanici_il']),
+        'kullanici_ilce' => htmlspecialchars($_POST['kullanici_ilce'])
+
+    ));
+
+    if ($update) {
+        Header("Location:../../adres-bilgileri.php?durum=ok");
+        exit;
+    } else {
+        Header("Location:../../adres-bilgileri.php?durum=hata");
+        exit;
+    }
+}
+
+
+// -----------------------------------------------------
+
+if (isset($_POST['musterisifreguncelle'])) {
+    // dışardan gelen bilgiler zararlı kodlardan temizlendi.
+    $kulllanici_eskipassword = htmlspecialchars($_POST['kullanici_eskipassword']);
+    $kullanici_passwordone = htmlspecialchars($_POST['kullanici_passwordone']);
+    $kullanici_passwordtwo = htmlspecialchars($_POST['kullanici_passwordtwo']);
+    // kullanıcının yazdığı eski şifre veritabanıyla eşleşmesi için md5 e çevrildi
+
+    $kullanici_password = md5($kulllanici_eskipassword);
+    //veri tabanından eski şifre çekildi.
+    $kullanicisor = $db->prepare("SELECT * FROM kullanici where kullanici_password=:pasword");
+    $kullanicisor->execute(array(
+
+        'pasword' => $kullanici_password
+
+
+
+    ));
+
+    $say = $kullanicisor->rowCount();
+
+    if ($say == 0) {
+        Header("Location:../../sifre-guncelle?durum=eskisifrehata ");
+        exit;
+    }
+
+
+    if ($kullanici_passwordone == $kullanici_passwordtwo) {
+
+        if (strlen($kullanici_passwordone) >= 6) {
+
+            $sifre = md5($kullanici_passwordone);
+
+            $kullaniciguncelle = $db->prepare("UPDATE kullanici SET  kullanici_password=:kullanici_password
+           
+            
+            WHERE kullanici_id={$_SESSION['userkullanici_id']}");
+
+            $update = $kullaniciguncelle->execute(array(
+
+
+                'kullanici_password' => $sifre
+
+            ));
+
+            if ($update) {
+                Header("Location:../../sifre-guncelle.php?durum=ok");
+                exit;
+            } else {
+                Header("Location:../../sifre-guncelle.php?durum=hata");
+                exit;
+            }
+        }
+    } else {
+        Header("Location:../../sifre-guncelle?durum=eksiksifre");
+        exit;
+    }
+} else {
+    header("Location:../../sifre-guncelle?durum=sifreleruyusmuyor");
+    exit;
+}
+
+// ------------------------------------------------------------------------------
+
+
+if (isset($_POST['musterimagazabasvuru'])) {
+
+
+
+
+    $kullaniciguncelle = $db->prepare("UPDATE kullanici SET
+
+kullanici_ad=:kullanici_ad,
+kullanici_soyad=:kullanici_soyad,
+kullanici_gsm=:kullanici_gsm,
+kullanici_iban=:kullanici_iban,
+kullanici_banka=:kullanici_banka,
+kullanici_tip=:kullanici_tip,
+kullanici_tc=:kullanici_tc,
+kullanici_unvan=:kullanici_unvan,
+kullanici_vdaire=:kullanici_vdaire,
+kullanici_vno=:kullanici_vno,
+kullanici_adres=:kullanici_adres,
+kullanici_il=:kullanici_il,
+kullanici_ilce=:kullanici_ilce
+
+WHERE kullanici_id={$_SESSION['userkullanici_id']}");
+
+    $update = $kullaniciguncelle->execute(array(
+
+
+        'kullanici_ad' => htmlspecialchars($_POST['kullanici_ad']),
+        'kullanici_soyad' => htmlspecialchars($_POST['kullanici_soyad']),
+        'kullanici_gsm' => htmlspecialchars($_POST['kullanici_gsm']),
+        'kullanici_iban' => htmlspecialchars($_POST['kullanici_iban']),
+        'kullanici_banka' => htmlspecialchars($_POST['kullanici_banka']),
+        'kullanici_tip' => htmlspecialchars($_POST['kullanici_tip']),
+        'kullanici_tc' => htmlspecialchars($_POST['kullanici_tc']),
+        'kullanici_unvan' => htmlspecialchars($_POST['kullanici_unvan']),
+        'kullanici_vdaire' => htmlspecialchars($_POST['kullanici_vdaire']),
+        'kullanici_vno' => htmlspecialchars($_POST['kullanici_vno']),
+        'kullanici_adres' => htmlspecialchars($_POST['kullanici_adres']),
+        'kullanici_il' => htmlspecialchars($_POST['kullanici_il']),
+        'kullanici_ilce' => htmlspecialchars($_POST['kullanici_ilce'])
+
+    ));
+
+    if ($update) {
+        Header("Location:../../magaza-basvuru.php?durum=ok");
+        exit;
+    } else {
+        Header("Location:../../magaza-basvuru.php?durum=hata");
+        exit;
     }
 }
