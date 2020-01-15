@@ -114,6 +114,8 @@ if ($say == 0) {
                             <ul class="nav side-menu">
                                 <li><a href="index.php"><i class="fa fa-home"></i> Anasayfa </a></li>
                                 <li><a href="hakkimizda.php"><i class="fa fa-info"></i> Hakkımızda </a></li>
+                                <li><a href="magazalar.php"><i class="fa fa-shopping-basket"></i> Mağazalar</a></li>
+                                <li><a href="magaza-onay.php"><i class="fa fa-shopping-basket"></i> Mağaza Başvuruları </a></li>
                                 <li><a href="kullanici.php"><i class="fa fa-user"></i> Kullanıcılar </a></li>
                                 <li><a href="urun.php"><i class="fa fa-shopping-basket"></i> Ürünler </a></li>
                                 <li><a href="menu.php"><i class="fa fa-list"></i> Menüler </a></li>

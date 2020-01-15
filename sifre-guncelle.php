@@ -37,7 +37,7 @@ islemkontrol();
 
                 <form action="nedmin/netting/kullanici.php" method="POST" class="form-horizontal">
                     <div class="settings-details tab-content">
-                        <div class="tab-pane fade active in" id="Personal">
+                        <div class="tab-pane fade active in">
                             <h2 class="title-section">Şifrenizi buradan değiştirebilirsiniz.</h2>
                             <div class="personal-info inner-page-padding">
                                 <?php
