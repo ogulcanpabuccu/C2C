@@ -107,6 +107,8 @@ if (isset($_SESSION['userkullanici_mail'])) {
 
     <!-- Modernizr Js -->
     <script src="js\modernizr-2.8.3.min.js"></script>
+    <!-- CK Editör yazım editörü -->
+    <script src="nedmin/production/ckeditor/ckeditor.js"></script>
 
 </head>
 
@@ -143,7 +145,6 @@ if (isset($_SESSION['userkullanici_mail'])) {
                                     </li> -->
 
                                     <?php
-
                                     if (isset($_SESSION['userkullanici_mail'])) { ?>
                                         <li>
                                             <div class="notify-notification">
@@ -175,7 +176,6 @@ if (isset($_SESSION['userkullanici_mail'])) {
                                                             <div class="notify-notification-subject">Need HTML Help!</div>
                                                             <div class="notify-notification-date">01 Dec, 2016</div>
                                                         </div>
-
 
                                                         <div class="notify-notification-sign">
                                                             <i class="fa fa-bell-o" aria-hidden="true"></i>
@@ -254,7 +254,7 @@ if (isset($_SESSION['userkullanici_mail'])) {
                                             <div class="user-account-info">
                                                 <div class="user-account-info-controler">
                                                     <div class="user-account-img">
-                                                        <img class="img-responsive" src="img\profile\4.png" alt="profile">
+                                                        <img class="img-responsive" width="32" height="32" style="border-radius: 30px;" src="<?php echo $kullanicicek['kullanici_magazafoto'] ?>" alt="profile">
                                                     </div>
                                                     <div class="user-account-title">
                                                         <div class="user-account-name"><?php echo $kullanicicek['kullanici_ad'] . " " . substr($kullanicicek['kullanici_soyad'], 0, 1) ?>.</div>
