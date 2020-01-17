@@ -59,9 +59,8 @@ $urunsor->execute();
                                 <tr>
                                     <th>Sıra No</th>
                                     <th>Ürün Adı</th>
-                                    <th>Ürün Stok</th>
+
                                     <th>Ürün Fiyat</th>
-                                    <th>Resim Ayarları</th>
                                     <th>Öne Çıkar</th>
                                     <th>Ürün Durum</th>
                                     <th></th>
@@ -79,11 +78,9 @@ $urunsor->execute();
                                     <tr>
                                         <td width="30"><?php echo $say ?></td>
                                         <td><?php echo $uruncek['urun_ad'] ?></td>
-                                        <td><?php echo $uruncek['urun_stok'] ?></td>
+
                                         <td><?php echo $uruncek['urun_fiyat'] ?></td>
-                                        <td>
-                                            <center> <a href="urun-galeri.php?urun_id=<?php echo $uruncek['urun_id']; ?>"><button class="btn btn-primary btn-xs">Resim İşlemleri</button></a></center>
-                                        </td>
+
                                         <td>
                                             <center><?php
 
@@ -131,7 +128,7 @@ $urunsor->execute();
                                         </td>
 
                                         <td>
-                                            <center><a href="../netting/islem.php?urun_id= <?php echo $uruncek['urun_id']; ?>&urunsil=ok "><button class="btn btn-danger btn-xs">Sil</button></a></center>
+                                            <center><a onclick="return confirm('Bu Ürünü silmek istediğinize emin misin ?')" href="../netting/islem.php?urun_id= <?php echo $uruncek['urun_id']; ?>&urunsil=ok "><button class="btn btn-danger btn-xs">Sil</button></a></center>
                                         </td>
 
                                     </tr>

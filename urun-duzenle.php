@@ -2,6 +2,15 @@
 
 islemkontrol();
 
+$urunsor = $db->prepare("SELECT * FROM urun where kullanici_id=:kullanici_id and urun_id=:urun_id order by urun_zaman DESC");
+
+$urunsor->execute(array(
+    'kullanici_id' => $_SESSION['userkullanici_id'],
+    'urun_id' => $_GET['urun_id']
+
+));
+$uruncek = $urunsor->fetch(PDO::FETCH_ASSOC)
+
 ?>
 
 
@@ -12,7 +21,7 @@ islemkontrol();
         <div class="pagination-wrapper">
             <ul>
                 <li><a href="index.php">Anasayfa</a><span> -</span></li>
-                <li>Adres Bilgilerim</li>
+                <li>Ürün Düzenle</li>
             </ul>
         </div>
     </div>
@@ -51,16 +60,22 @@ islemkontrol();
                 <form action="nedmin/netting/adminislem.php" method="POST" class="form-horizontal" enctype="multipart/form-data" id="personal-info-form">
                     <div class="settings-details tab-content">
                         <div class="tab-pane fade active in" id="Personal">
-                            <h2 class="title-section">Ürün Ekleme</h2>
+                            <h2 class="title-section">Ürün Düzenle</h2>
                             <div class="personal-info inner-page-padding">
 
-
+                                <div class="form-group ">
+                                    <label class="col-sm-3 control-label">Mevcut Fotoğraf</label>
+                                    <div class="col-sm-9">
+                                        <img width="200" src="<?php echo $uruncek['urunfoto_resimyol']; ?>" alt="">
+                                    </div>
+                                </div>
                                 <div class="form-group ">
                                     <label class="col-sm-3 control-label">Fotoğraf</label>
                                     <div class="col-sm-9">
-                                        <input required class="form-control" type="file" name="urunfoto_resimyol">
+                                        <input class="form-control" type="file" name="urunfoto_resimyol">
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Kategori</label>
                                     <div class="col-sm-9">
@@ -74,7 +89,9 @@ islemkontrol();
                                                 while ($kategoricek = $kategorisor->fetch(PDO::FETCH_ASSOC)) {
                                                 ?>
 
-                                                    <option value="<?php echo $kategoricek['kategori_id'] ?>"><?php echo $kategoricek['kategori_ad'] ?></option>
+                                                    <option <?php if ($kategoricek['kategori_id'] == $uruncek['kategori_id']) {
+                                                                echo "selected";
+                                                            } ?> value="<?php echo $kategoricek['kategori_id'] ?>"><?php echo $kategoricek['kategori_ad'] ?></option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -90,7 +107,7 @@ islemkontrol();
                                 <div class="form-group ">
                                     <label class="col-sm-3 control-label">Adı</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" required name="urun_ad" placeholder="Ürün Adını giriniz.">
+                                        <input class="form-control" type="text" required name="urun_ad" value="<?php echo $uruncek['urun_ad'] ?>">
                                     </div>
                                 </div>
 
@@ -99,7 +116,7 @@ islemkontrol();
                                     <div class="col-sm-9">
 
 
-                                        <textarea class="ckeditor" id="editor1" name="urun_detay" placeholder="Ürün Açıklamasını giriniz."></textarea>
+                                        <textarea class="ckeditor" id="editor1" name="urun_detay"><?php echo $uruncek['urun_detay'] ?></textarea>
 
 
                                     </div>
@@ -131,15 +148,19 @@ islemkontrol();
                                 <div class="form-group ">
                                     <label class="col-sm-3 control-label">Fiyat</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control placeicon" type="text" required name="urun_fiyat" placeholder="Ürün Fiyatını giriniz.&#xf195;">
+
+                                        <input class="form-control placeicon" type="text" required name="urun_fiyat" value="<?php echo $uruncek['urun_fiyat'] ?> &#xf195;">
                                     </div>
                                 </div>
+
+                                <input type="hidden" value="<?php echo $uruncek['urun_id'] ?>" name="urun_id">
+                                <input type="hidden" value="<?php echo $uruncek['urunfoto_resimyol'] ?>" name="eski_yol">
 
                                 <div class="form-group">
 
                                     <div class="col-sm-12">
 
-                                        <center><button class="update-btn" name="magazaurunekle">Ürünü Ekle</button></center>
+                                        <center><button class="update-btn" name="magazaurunduzenle">Ürünü Düzenle</button></center>
                                     </div>
                                 </div>
 

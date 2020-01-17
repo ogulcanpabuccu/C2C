@@ -259,7 +259,7 @@ WHERE kullanici_id={$_SESSION['userkullanici_id']}");
 
 if (isset($_POST['magazaurunekle'])) {
 
-    if ($_FILES['urunfoto_resimyol']['size'] > 2097152) {
+    if ($_FILES['urunfoto_resimyol']['size'] > 1048576) {
 
         header("Location:../../urun-ekle.php?durum=dosyabuyuk");
     }
@@ -274,6 +274,8 @@ if (isset($_POST['magazaurunekle'])) {
     }
     @$tmp_name = $_FILES['urunfoto_resimyol']["tmp_name"];
     @$name = $_FILES['urunfoto_resimyol']["name"];
+
+
     //İmage Resize işlemleri:
     include('SimpleImage.php');
     $image = new SimpleImage();
@@ -324,5 +326,178 @@ if (isset($_POST['magazaurunekle'])) {
 
         Header("Location:../../urun-ekle.php?durum=hata");
         exit;
+    }
+}
+
+//---------------------------Mağaza Ürün Düzenleme-----------------------------------------------------
+
+
+
+if (isset($_POST['magazaurunduzenle'])) {
+
+    if ($_FILES['urunfoto_resimyol']['size'] > 0) {
+
+        if ($_FILES['urunfoto_resimyol']['size'] > 1048576) {
+
+            echo "Dosya Boyutu çok büyük";
+
+            header("Location:../../urun-duzenle.php?durum=dosyabuyuk");
+        }
+
+
+        $izinli_uzantilar = array('jpg', 'png');
+
+        $ext = strtolower(substr($_FILES['urunfoto_resimyol']["name"], strpos($_FILES['urunfoto_resimyol']["name"], '.') + 1));
+        if (in_array($ext, $izinli_uzantilar) === false) {
+            echo "Bu uzantı kabul edilmiyor";
+            Header("Location:../../urun-duzenle.php?durum=formathata");
+            exit;
+        }
+        @$tmp_name = $_FILES['urunfoto_resimyol']["tmp_name"];
+        @$name = $_FILES['urunfoto_resimyol']["name"];
+
+
+        //İmage Resize işlemleri:
+        include('SimpleImage.php');
+        $image = new SimpleImage();
+        $image->load($tmp_name);
+        $image->resize(829, 422);
+        $image->save($tmp_name);
+
+
+
+        $uploads_dir = '../../dimg/urunfoto';
+
+
+        //uniqid(); benzersiz isim oluşturmada daha kullanışlı
+        $uniq = uniqid();
+        $refimgyol = substr($uploads_dir, 6) . "/" . $uniq . "." . $ext;
+
+        @move_uploaded_file($tmp_name, "$uploads_dir/$uniq.$ext");
+
+
+        $duzenle = $db->prepare("UPDATE urun SET
+         kategori_id=:kategori_id,
+         urun_ad=:urun_ad,
+         urun_detay=:urun_detay,
+         urun_fiyat=:urun_fiyat,
+         urunfoto_resimyol=:urunfoto_resimyol
+
+         WHERE  urun_id = {$_POST['urun_id']}");
+
+        $update = $duzenle->execute(array(
+
+            'kategori_id' => htmlspecialchars($_POST['kategori_id']),
+            'urun_ad' => htmlspecialchars($_POST['urun_ad']),
+            'urun_detay' => htmlspecialchars($_POST['urun_detay']),
+            'urun_fiyat' => htmlspecialchars($_POST['urun_fiyat']),
+            'urunfoto_resimyol' => $refimgyol
+        ));
+
+
+        $urun_id = $_POST['urun_id'];
+
+        if ($update) {
+
+            $resimsilunlink = $_POST['eski_yol'];
+            unlink("../../$resimsilunlink");
+
+            Header("Location:../../urun-duzenle.php?durum=ok&urun_id=$urun_id");
+            exit;
+        } else {
+
+            Header("Location:../../urun-duzenle.php?durum=hata&urun_id=$urun_id");
+            exit;
+        }
+    } else {
+        # fotoğraf yoksa işlemler
+
+        $duzenle = $db->prepare("UPDATE urun SET
+         kategori_id=:kategori_id,
+         urun_ad=:urun_ad,
+         urun_detay=:urun_detay,
+         urun_fiyat=:urun_fiyat
+
+         WHERE  urun_id = {$_POST['urun_id']}");
+
+        $update = $duzenle->execute(array(
+
+            'kategori_id' => htmlspecialchars($_POST['kategori_id']),
+            'urun_ad' => htmlspecialchars($_POST['urun_ad']),
+            'urun_detay' => htmlspecialchars($_POST['urun_detay']),
+            'urun_fiyat' => htmlspecialchars($_POST['urun_fiyat'])
+        ));
+
+
+        $urun_id = $_POST['urun_id'];
+
+        if ($update) {
+
+            Header("Location:../../urun-duzenle.php?durum=ok&urun_id=$urun_id");
+            exit;
+        } else {
+
+            Header("Location:../../urun-duzenle.php?durum=hata&urun_id=$urun_id");
+            exit;
+        }
+    }
+}
+
+//--------------------Ürün Sil----------------------------------------
+
+if ($_GET['urunsil'] == "ok") {
+
+
+
+
+    $sil = $db->prepare("DELETE from urun where urun_id=:id");
+    $kontrol = $sil->execute(array(
+        'id' => $_GET['urun_id']
+    ));
+
+    if ($kontrol) {
+
+
+        $resimsilunlink = $_GET['urunfoto_resimyol'];
+        unlink("../../$resimsilunlink");
+
+
+        Header("Location:../../urunlerim.php?durum=ok");
+    } else {
+        Header("Location:../../urunlerim.php?durum=hata");
+    }
+}
+
+
+//------------------------------------------------------------------------------------------
+
+
+if (isset($_POST['kategoriduzenle'])) {
+
+    $kategori_id = $_POST['kategori_id'];
+    $kategori_seourl = seo($_POST['kategori_ad']);
+
+
+    $kaydet = $db->prepare("UPDATE kategori SET
+		kategori_ad=:ad,
+		kategori_durum=:kategori_durum,	
+		kategori_seourl=:seourl,
+        kategori_onecikar=:kategori_onecikar,
+		kategori_sira=:sira
+		WHERE kategori_id={$_POST['kategori_id']}");
+    $update = $kaydet->execute(array(
+        'ad' => htmlspecialchars($_POST['kategori_ad']),
+        'kategori_durum' => htmlspecialchars($_POST['kategori_durum']),
+        'seourl' => $kategori_seourl,
+        'kategori_onecikar' => htmlspecialchars($_POST['kategori_onecikar']),
+        'sira' => $_POST['kategori_sira']
+    ));
+
+    if ($update) {
+
+        Header("Location:../production/kategori-duzenle.php?durum=ok&kategori_id=$kategori_id");
+    } else {
+
+        Header("Location:../production/kategori-duzenle.php?durum=no&kategori_id=$kategori_id");
     }
 }

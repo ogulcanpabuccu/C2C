@@ -58,7 +58,7 @@ $kategoricek = $kategorisor->fetch(PDO::FETCH_ASSOC);
                         <br />
 
                         <!-- / => en üst dizine çık  ---- ../ => bir üst dizine çık -->
-                        <form action="../netting/islem.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <form action="../netting/adminislem.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
 
 
@@ -71,13 +71,27 @@ $kategoricek = $kategorisor->fetch(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">kategori Sıra: <span class="required">*</span>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategori Sıra: <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input type="text" id="first-name" name="kategori_sira" value="<?php echo $kategoricek['kategori_sira'] ?>" required="required" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Kategoriyi Öne Çıkarın: <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select id="heard" class="form-control" name="kategori_onecikar" required>
+
+                                        <!-- kısa if kullanımı ile select box kullanımı -->
+
+                                        <option value="1" <?php echo $kategoricek['kategori_onecikar'] == '1' ? 'selected=""' : ''; ?>> Evet </option>
+                                        <option value="0" <?php echo $kategoricek['kategori_onecikar'] == '0' ? 'selected=""' : ''; ?>> Hayır </option>
+
+                                    </select>
+                                </div>
+                            </div>
 
 
                             <div class="form-group">
@@ -90,33 +104,6 @@ $kategoricek = $kategorisor->fetch(PDO::FETCH_ASSOC);
 
                                         <option value="1" <?php echo $kategoricek['kategori_durum'] == '1' ? 'selected=""' : ''; ?>> Aktif </option>
                                         <option value="0" <?php echo $kategoricek['kategori_durum'] == '0' ? 'selected=""' : ''; ?>> Pasif </option>
-
-
-
-
-                                        <!-- İf ile uzun yoldan select box ile aktif pasif çağırma 
-
-
-                                         <?php
-
-
-                                            if ($kategoricek['kategori_durum'] == 0) { ?>
-
-                                            <option value="0">Pasif</option>
-                                            <option value="1">Aktif</option>
-
-                                        <?php   } else { ?>
-
-                                            <option value="1">Aktif</option>
-                                            <option value="0">Pasif</option>
-
-                                        <?php  }
-
-
-
-                                        ?>
-                                        
--->
 
 
                                     </select>

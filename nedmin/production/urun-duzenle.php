@@ -59,8 +59,19 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC);
 
                         <!-- / => en üst dizine çık  ---- ../ => bir üst dizine çık -->
                         <form action="../netting/islem.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-
                             <!-- Kategori seçme başlangıç -->
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ürün Resim: <span class="required">*</span>
+                                </label>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                    <img width="200" src="../../<?php echo $uruncek['urunfoto_resimyol'] ?>" alt="">
+                                </div>
+                            </div>
+
+
+
 
 
                             <div class="form-group">
@@ -72,7 +83,7 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC);
 
                                     $urun_id = $uruncek['kategori_id'];
 
-                                    $kategorisor = $db->prepare("select * from kategori where kategori_ust=:kategori_ust order by kategori_sira");
+                                    $kategorisor = $db->prepare("SELECT * from kategori where kategori_ust=:kategori_ust order by kategori_sira");
                                     $kategorisor->execute(array(
                                         'kategori_ust' => 0
                                     ));
@@ -156,28 +167,6 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ürün Video: <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="first-name" name="urun_video" value="<?php echo $uruncek['urun_video'] ?>" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ürün Keyword: <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="first-name" name="urun_keyword" value="<?php echo $uruncek['urun_keyword'] ?>" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ürün Stok: <span class="required">*</span>
-                                </label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="first-name" name="urun_stok" value="<?php echo $uruncek['urun_stok'] ?>" required="required" class="form-control col-md-7 col-xs-12">
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Ürünü Öne Çıkarın: <span class="required">*</span>
                                 </label>
