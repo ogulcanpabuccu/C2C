@@ -48,10 +48,13 @@
                 <div class="alert alert-success">
                     <strong>Bilgi!</strong> Başarıyla Çıkış yapıldı.
                 </div>
-            <?php  } else {
-                # code...
-            }
+            <?php  } elseif ($_GET['durum'] == "kayitok") { ?>
 
+                <div class="alert alert-success">
+                    <strong>Bigi!</strong> Kaydınız Yapıldı giriş yapabilirsiniz.
+                </div>
+
+            <?php }
 
 
             ?>

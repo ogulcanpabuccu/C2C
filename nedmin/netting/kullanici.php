@@ -360,3 +360,163 @@ WHERE kullanici_id={$_SESSION['userkullanici_id']}");
 }
 
 //-----------------------------------------------------------------------------------------
+
+
+if (isset($_POST['sipariskaydet'])) {
+
+    $kaydet = $db->prepare(
+        "INSERT INTO siparis SET
+
+kullanici_id=:id,
+kullanici_idsatici=:idsatici"
+    );
+
+    $insert = $kaydet->execute(array(
+
+        'id' => htmlspecialchars($_SESSION['userkullanici_id']),
+        'idsatici' => htmlspecialchars($_POST['kullanici_idsatici'])
+    ));
+
+    if ($insert) {
+
+        $siparis_id = $db->lastInsertId();
+
+
+        $sipariskaydet = $db->prepare(
+            "INSERT INTO siparis_detay SET
+    
+    siparis_id=:siparis_id,
+    kullanici_id=:id,
+    kullanici_idsatici=:idsatici,
+    urun_id=:urun_id,
+    urun_fiyat=:urun_fiyat"
+        );
+
+        $insertkaydet = $sipariskaydet->execute(array(
+            'siparis_id' => $siparis_id,
+            'id' => htmlspecialchars($_SESSION['userkullanici_id']),
+            'idsatici' => htmlspecialchars($_POST['kullanici_idsatici']),
+            'urun_id' => htmlspecialchars($_POST['urun_id']),
+            'urun_fiyat' => htmlspecialchars($_POST['urun_fiyat'])
+        ));
+
+        if ($insertkaydet) {
+            header("Location:../../siparislerim.php");
+        }
+    } else {
+        header("Location:../../404.php");
+    }
+}
+
+
+//---------------------------------------------------------------------------------------------
+
+
+if ($_GET['urunonay'] == "ok") {
+
+    $siparis_id = $_GET['siparis_id'];
+
+
+    $siparis_detayguncelle = $db->prepare("UPDATE siparis_detay SET
+
+
+siparisdetay_onay=:siparisdetay_onay
+
+WHERE siparisdetay_id={$_GET['siparisdetay_id']}");
+
+    $update = $siparis_detayguncelle->execute(array(
+
+
+        'siparisdetay_onay' => 2
+
+    ));
+
+    if ($update) {
+        Header("Location:../../siparis-detay.php?siparis_id=$siparis_id");
+        exit;
+    } else {
+        Header("Location:../production/magazalar.php?durum=no");
+        exit;
+    }
+}
+
+
+//---------------------------------------------------------------------------------------------
+
+
+if ($_GET['urunteslim'] == "ok") {
+
+    $siparis_id = $_GET['siparis_id'];
+
+
+    $siparis_detayguncelle = $db->prepare("UPDATE siparis_detay SET
+
+
+siparisdetay_onay=:siparisdetay_onay
+
+WHERE siparisdetay_id={$_GET['siparisdetay_id']}");
+
+    $update = $siparis_detayguncelle->execute(array(
+
+
+        'siparisdetay_onay' => 1
+
+    ));
+
+    if ($update) {
+        Header("Location:../../yeni-siparisler.php?siparis_id=$siparis_id");
+        exit;
+    } else {
+        // Header("Location:../production/magazalar.php?durum=no");
+        exit;
+    }
+}
+
+//------------------------------------------------------------------------------
+
+if (isset($_POST['puanyorumekle'])) {
+
+    $kaydet = $db->prepare(
+        "INSERT INTO yorumlar SET
+
+        yorum_puan=:yorum_puan,
+        urun_id=:urun_id,
+        yorum_detay=:yorum_detay,
+        kullanici_id=:kullanici_id"
+    );
+
+    $insert = $kaydet->execute(array(
+
+        'yorum_puan' => htmlspecialchars($_POST['yorum_puan']),
+        'urun_id' => htmlspecialchars($_POST['urun_id']),
+        'yorum_detay' => htmlspecialchars($_POST['yorum_detay']),
+        'kullanici_id' => $_SESSION['userkullanici_id']
+
+
+    ));
+    $siparis_id = $_POST['siparis_id'];
+
+
+    if ($insert) {
+        $siparis_detayguncelle = $db->prepare("UPDATE siparis_detay SET
+
+            siparisdetay_yorum=:siparisdetay_yorum
+
+            WHERE siparis_id={$_POST['siparis_id']}");
+
+        $update = $siparis_detayguncelle->execute(array(
+
+            'siparisdetay_yorum' => 1
+
+        ));
+
+
+
+
+        Header("Location:../../siparis-detay.php?siparis_id=$siparis_id&durum=ok");
+        exit;
+    } else {
+        Header("Location:../../siparis-detay.php?siparis_id=$siparis_id&durum=no");
+        exit;
+    }
+}

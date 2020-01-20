@@ -4,18 +4,22 @@
 <div class="main-banner2-area">
     <div class="container">
         <div class="main-banner2-wrapper">
-            <h1>Welcome To Foxtar Market Place!</h1>
-            <p>Premium WordPress Themes, Web Templates and Many More ...</p>
-            <div class="banner-search-area input-group">
-                <input class="form-control" placeholder="Search Your Keywords . . ." type="text">
-                <span class="input-group-addon">
-                    <button type="submit">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
-            </div>
+            <h1>Yeni platform yeni fırsat !!!</h1>
+            <p>Aradığınız herşey !!!</p>
+
+
+            <form action="arama-detay.php" method="POST">
+                <div class="banner-search-area input-group">
+                    <input class="form-control" minlength="3" name="searchkeyword" required placeholder="aramak istediğiniz ürünü lütfen yazınız ? " type="text">
+                    <span class="input-group-addon">
+                        <button type="submit" name="searchsayfa">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- Main Banner 1 Area End Here -->
 <!-- Trending Products Area Start Here -->
@@ -221,7 +225,7 @@
             $urunsor = $db->prepare("SELECT urun.urun_ad,urun.kategori_id,urun.urun_id,urun.urun_fiyat,urun.urunfoto_resimyol,urun.kullanici_id,urun.urun_durum,urun.urun_onecikar,
             kategori.kategori_ad,kategori.kategori_id,kullanici.kullanici_id,kullanici.kullanici_ad,kullanici.kullanici_soyad,kullanici.kullanici_magazafoto 
             FROM urun INNER JOIN kategori ON urun.kategori_id=kategori.kategori_id INNER JOIN kullanici ON urun.kullanici_id=kullanici.kullanici_id where urun_onecikar=:onecikar
-            and urun_durum=:durum order by urun_zaman,urun_onecikar DESC limit 8 ");
+            and urun_durum=:durum order by urun_zaman,urun_onecikar DESC limit 6 ");
 
             $urunsor->execute(array(
 
@@ -242,7 +246,7 @@
                         </div>
                         <div class="item-content">
                             <div class="item-info">
-                                <h3><a href="#"><?php echo $uruncek['urun_ad'] ?></a></h3>
+                                <h3><a href="urun-<?= seo($uruncek['urun_ad']) . "-" . $uruncek['urun_id'];  ?>"><?php echo $uruncek['urun_ad'] ?></a></h3>
                                 <span><a href="kategoriler-<?= seo($uruncek['kategori_ad']) . "-" . $uruncek['kategori_id'];  ?>"><?php echo $uruncek['kategori_ad'] ?></a></span>
                                 <div class="price"><?php echo $uruncek['urun_fiyat'] ?> <i class="fa fa-try" aria-hidden="true"></i>
                                 </div>

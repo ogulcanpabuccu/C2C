@@ -319,6 +319,7 @@ if (isset($_SESSION['userkullanici_mail'])) {
                         <nav id="desktop-nav">
                             <ul>
                                 <li class="active"><a href="index.php">Anasayfa</a></li>
+                                <li class=""><a href="kategoriler.php">Kategoriler</a></li>
 
                                 <?php
                                 $kategorisor = $db->prepare("SELECT * FROM kategori where kategori_onecikar=:onecikar order by kategori_sira ASC");
@@ -332,7 +333,7 @@ if (isset($_SESSION['userkullanici_mail'])) {
 
                                 ?>
 
-                                    <li class=""><a href="#"><?php echo $kategoricek['kategori_ad'] ?></a></li>
+                                    <li class=""><a href="kategoriler-<?= seo($kategoricek['kategori_ad']) . "-" . $kategoricek['kategori_id'];  ?>"><?php echo $kategoricek['kategori_ad'] ?></a></li>
 
 
 

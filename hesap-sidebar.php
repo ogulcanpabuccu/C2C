@@ -6,7 +6,7 @@
         <li><a href="magaza-basvuru">Mağaza Başvuru</a></li>
 
       <?php } ?>
-      <li><a href="hesabim">Siparişlerim</a></li>
+      <li><a href="siparislerim">Siparişlerim</a></li>
       <li><a href="hesabim">Hesap Bilgilerim</a></li>
       <li><a href="adres-bilgileri">Adres Bilgilerim</a></li>
       <li><a href="profil-resim-guncelle">Profil Resmi Güncelle</a></li>
@@ -22,8 +22,8 @@
         <li class="active"><a href="javascript:void(0)"> <b>MAĞAZA İŞLEMLERİ</b></a></li>
         <li><a href="urun-ekle">Ürün Ekle</a></li>
         <li><a href="urunlerim">Ürünlerim</a></li>
-        <li><a href="adres-bilgileri">Yeni Siparişler</a></li>
-        <li><a href="sifre-guncelle">Tamamlanan Siparişler</a></li>
+        <li><a href="yeni-siparisler">Yeni Siparişler</a></li>
+        <li><a href="tamamlanan-siparisler">Tamamlanan Siparişler</a></li>
         <li><a href="sifre-guncelle">Mesajlar</a></li>
         <li><a href="sifre-guncelle">Ayarlar</a></li>
 

@@ -44,7 +44,8 @@
             </ul>
         </div>
     </div>
-    <div class="sidebar-item">
+
+    <!-- <div class="sidebar-item">
         <div class="sidebar-item-inner">
             <h3 class="sidebar-item-title">Fiyat Aralığı</h3>
             <div id="price-range-wrapper" class="price-range-wrapper">
@@ -56,5 +57,7 @@
                 <button class="sidebar-full-width-btn disabled" type="submit" value="Login"><i class="fa fa-search" aria-hidden="true"></i>Search</button>
             </div>
         </div>
-    </div>
+    </div> -->
+
+
 </div>
