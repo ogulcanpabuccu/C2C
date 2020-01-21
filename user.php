@@ -54,21 +54,114 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                             <div class="item-details"><?php echo $kullanicicek['kullanici_zaman'] ?></div>
                         </div>
                         <div class="single-item">
-                            <div class="item-title">Puanı</div>
+                            <div class="item-title">Puan:</div>
                             <div class="item-details">
+                                <?php
+
+
+
+                                $puansay = $db->prepare("SELECT COUNT(yorumlar.yorum_puan) as say, SUM(yorumlar.yorum_puan) as topla, yorumlar.*,urun.* FROM yorumlar INNER JOIN urun 
+                                ON yorumlar.urun_id=urun.urun_id where urun.kullanici_id=:id");
+
+                                $puansay->execute(array(
+
+                                    'id' => $_GET['kullanici_id']
+
+                                ));
+
+                                $puancek = $puansay->fetch(PDO::FETCH_ASSOC);
+
+
+                                $puan = round($puancek['topla'] / $puancek['say']);
+
+                                ?>
                                 <ul class="default-rating">
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li>(<span> 05</span> )</li>
+
+
+
+                                    <?php
+
+                                    switch ($puan) {
+                                        case '5': ?>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li>(<span> <?php echo $puan ?></span> )</li>
+                                        <?php break;
+                                        case '4': ?>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li>(<span> <?php echo $puan ?></span> )</li>
+
+                                        <?php break;
+                                        case '3': ?>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li>(<span> <?php echo $puan ?></span> )</li>
+
+                                        <?php break;
+                                        case '2': ?>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li>(<span> <?php echo $puan ?></span> )</li>
+
+                                        <?php break;
+                                        case '1': ?>
+                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                            <li>(<span> <?php echo $puan ?></span> )</li>
+
+                                    <?php break;
+                                    }
+
+                                    ?>
+
+
+
                                 </ul>
                             </div>
                         </div>
                         <div align="center" class="single-item">
                             <div class="item-title">Toplam Satış:</div>
-                            <div class="item-name">55</div>
+                            <div class="item-name">
+
+                                <?php
+                                ///////////////////////////////////////////////////////////////////
+
+
+                                $urunsay = $db->prepare("SELECT COUNT(kullanici_idsatici) as say from siparis_detay where kullanici_idsatici=:id");
+
+                                $urunsay->execute(array(
+
+                                    'id' => $_GET['kullanici_id']
+
+                                ));
+
+                                $saycek = $urunsay->fetch(PDO::FETCH_ASSOC);
+
+
+                                echo $saycek['say'];
+
+                                ?>
+
+
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,7 +173,7 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                             <h3 class="sidebar-item-title">Satıcı</h3>
                             <div class="sidebar-author-info">
                                 <div class="sidebar-author-img">
-                                    <img src="img\profile\avatar.jpg" alt="product" class="img-responsive">
+                                    <img src="<?php echo $kullanicicek['kullanici_magazafoto'] ?>" alt="product" class="img-responsive">
                                 </div>
                                 <div class="sidebar-author-content">
                                     <h3><?php echo $kullanicicek['kullanici_ad'] ?></h3>
@@ -88,11 +181,43 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                                 </div>
                             </div>
                             <ul class="sidebar-badges-item">
-                                <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges5.png" alt="badges" class="img-responsive"></li>
+                                <?php
+
+                                if ($saycek['say'] >= 1 and $saycek['say'] <= 9) { ?>
+
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 10 and $saycek['say'] <= 19) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 20 and $saycek['say'] <= 39) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 40 and $saycek['say'] <= 59) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 60) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges5.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] < 1) { ?>
+                                    <li>
+                                        <p>Şuan hiç satış yapmamışsınız satış yaptığınız takdirde burada başarımlar kazanacaksınız.</p>
+                                    </li>
+
+
+                                <?php }  ?>
+
+
                             </ul>
                         </div>
                     </div>

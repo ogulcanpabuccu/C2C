@@ -62,7 +62,102 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC)
                                         </ul>
                                     </div>
                                     <div class="tab-pane fade" id="yorum">
-                                        <p>Yorumlar buraya gelecek.</p>
+
+                                        <div class="container">
+
+                                            <div class="row">
+                                                <div class="col-md-8">
+
+                                                    <div class="comments-list">
+
+                                                        <?php
+
+                                                        $yorumsor = $db->prepare("SELECT yorumlar.*,kullanici.* FROM yorumlar INNER JOIN kullanici ON yorumlar.kullanici_id=kullanici.kullanici_id where urun_id=:id order by yorum_zaman DESC");
+
+                                                        $yorumsor->execute(array(
+                                                            'id' => $_GET['urun_id']
+
+                                                        ));
+
+                                                        if (!$yorumsor->rowCount()) {
+                                                            echo "Bu ürün için henüz yorum girilmemiştir.";
+                                                        }
+
+                                                        while ($yorumcek = $yorumsor->fetch(PDO::FETCH_ASSOC)) {
+
+                                                        ?>
+                                                            <div class="media">
+                                                                <div class="media-body">
+                                                                    <h4 class="media-heading user_name"><img style="border-radius: 30px; float:left; margin-right:10px;" width="32" class="img-responsive" src="<?php echo $yorumcek['kullanici_magazafoto'] ?>" alt="Profil Resmi"><?php echo $yorumcek['kullanici_ad'] . " " . $yorumcek['kullanici_soyad'] ?>
+
+
+                                                                        <ul style="float: right" class="default-rating">
+
+                                                                            <?php
+
+                                                                            switch ($yorumcek['yorum_puan']) {
+                                                                                case '5': ?>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                <?php break;
+                                                                                case '4': ?>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+
+                                                                                <?php break;
+                                                                                case '3': ?>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+
+                                                                                <?php break;
+                                                                                case '2': ?>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+
+                                                                                <?php break;
+                                                                                case '1': ?>
+                                                                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+                                                                                    <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
+
+                                                                            <?php break;
+                                                                            }
+
+                                                                            ?>
+
+                                                                            <li>(<span> <?php echo $yorumcek['yorum_puan'] ?></span> )</li>
+                                                                        </ul>
+
+                                                                    </h4>
+                                                                    <?php echo $yorumcek['yorum_detay'] ?>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                            <hr>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
 
                                 </div>
@@ -194,7 +289,29 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC)
                         <div class="sidebar-item-inner">
                             <ul class="sidebar-sale-info">
                                 <li><i class="fa fa-shopping-cart" aria-hidden="true"></i></li>
-                                <li>05</li>
+                                <li>
+
+                                    <?php
+
+
+
+                                    $urunsay = $db->prepare("SELECT COUNT(urun_id) as say from siparis_detay where urun_id=:id");
+
+                                    $urunsay->execute(array(
+
+                                        'id' => $_GET['urun_id']
+
+                                    ));
+
+                                    $saycek = $urunsay->fetch(PDO::FETCH_ASSOC);
+
+
+                                    echo $saycek['say'];
+
+                                    ?>
+
+
+                                </li>
                                 <li>Satış</li>
                             </ul>
                         </div>
@@ -211,11 +328,57 @@ $uruncek = $urunsor->fetch(PDO::FETCH_ASSOC)
                                 </div>
                             </div>
                             <ul class="sidebar-badges-item">
-                                <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
-                                <li><img src="img\profile\badges5.png" alt="badges" class="img-responsive"></li>
+
+
+
+
+                                <?php
+                                $urunsay = $db->prepare("SELECT COUNT(kullanici_idsatici) as say from siparis_detay where kullanici_idsatici=:id");
+
+                                $urunsay->execute(array(
+
+                                    'id' => $uruncek['kullanici_id']
+
+                                ));
+
+                                $saycek = $urunsay->fetch(PDO::FETCH_ASSOC);
+
+
+                                if ($saycek['say'] >= 1 and $saycek['say'] <= 9) { ?>
+
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 10 and $saycek['say'] <= 19) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 20 and $saycek['say'] <= 39) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 40 and $saycek['say'] <= 59) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] >= 60) { ?>
+                                    <li><img src="img\profile\badges1.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges2.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges3.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges4.png" alt="badges" class="img-responsive"></li>
+                                    <li><img src="img\profile\badges5.png" alt="badges" class="img-responsive"></li>
+
+                                <?php    } else if ($saycek['say'] < 1) { ?>
+                                    <li>
+                                        <p>Şuana kadar hiç satış yapmamışsınız satış yaptığınız takdirde burada başarımlar kazanacaksınız.</p>
+                                    </li>
+
+
+                                <?php }  ?>
+
+
                             </ul>
                         </div>
                     </div>
