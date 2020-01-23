@@ -520,3 +520,110 @@ if (isset($_POST['puanyorumekle'])) {
         exit;
     }
 }
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+if (isset($_POST['mesajgonder'])) {
+
+    $kullanici_gel = $_POST['kullanici_gel'];
+
+    $kaydet = $db->prepare(
+        "INSERT INTO mesaj SET
+
+mesaj_detay=:mesaj_detay,
+kullanici_gel=:kullanici_gel,
+kullanici_gon=:kullanici_gon
+"
+    );
+
+    $insert = $kaydet->execute(array(
+
+        'mesaj_detay' => $_POST['mesaj_detay'],
+        'kullanici_gel' => htmlspecialchars($_POST['kullanici_gel']),
+        'kullanici_gon' => htmlspecialchars($_SESSION['userkullanici_id'])
+
+
+    ));
+
+    if ($insert) {
+
+
+        header("Location:../../mesaj-gonder.php?durum=ok&kullanici_gel=$kullanici_gel"); // giden mesajlara göndermeyi unutma
+    } else {
+        header("Location:../../mesaj-gonder.php?durum=no&kullanici_gel=$kullanici_gel");
+    }
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+if (isset($_POST['mesajcevapver'])) {
+
+    $kullanici_gel = $_POST['kullanici_gel'];
+
+    $kaydet = $db->prepare(
+        "INSERT INTO mesaj SET
+
+mesaj_detay=:mesaj_detay,
+kullanici_gel=:kullanici_gel,
+kullanici_gon=:kullanici_gon
+"
+    );
+
+    $insert = $kaydet->execute(array(
+
+        'mesaj_detay' => $_POST['mesaj_detay'],
+        'kullanici_gel' => htmlspecialchars($_POST['kullanici_gel']),
+        'kullanici_gon' => htmlspecialchars($_SESSION['userkullanici_id'])
+
+
+    ));
+
+    if ($insert) {
+
+
+        header("Location:../../gelen-mesajlar.php?durum=ok"); // giden mesajlara göndermeyi unutma
+    } else {
+        header("Location:../../gelen-mesajlar.php?durum=no");
+    }
+}
+
+//-------------------- giden Mesaj Sil----------------------------------------
+
+if ($_GET['gidenmesajsil'] == "ok") {
+
+
+
+
+    $sil = $db->prepare("DELETE from mesaj where mesaj_id=:id");
+    $kontrol = $sil->execute(array(
+        'id' => $_GET['mesaj_id']
+    ));
+
+    if ($kontrol) {
+
+        Header("Location:../../giden-mesajlar.php?durum=ok");
+    } else {
+        Header("Location:../../giden-mesajlar.php?durum=hata");
+    }
+}
+
+//-------------------- gelen Mesaj Sil----------------------------------------
+
+if ($_GET['gelenmesajsil'] == "ok") {
+
+
+
+
+    $sil = $db->prepare("DELETE from mesaj where mesaj_id=:id");
+    $kontrol = $sil->execute(array(
+        'id' => $_GET['mesaj_id']
+    ));
+
+    if ($kontrol) {
+
+        Header("Location:../../gelen-mesajlar.php?durum=ok");
+    } else {
+        Header("Location:../../gelen-mesajlar.php?durum=hata");
+    }
+}

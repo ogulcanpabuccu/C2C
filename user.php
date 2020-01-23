@@ -39,133 +39,11 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
 <div class="profile-page-area bg-secondary section-space-bottom">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 col-lg-push-3 col-md-push-4 col-sm-push-4">
-                <div class="inner-page-main-body">
-                    <div class="single-banner">
-                        <img src="img\banner\1.jpg" alt="product" class="img-responsive">
-                    </div>
-                    <div class="author-summery">
-                        <div class="single-item">
-                            <div class="item-title">Bölge</div>
-                            <div class="item-details"><?php echo $kullanicicek['kullanici_ilce'] . "/" . $kullanicicek['kullanici_il'] ?></div>
-                        </div>
-                        <div class="single-item">
-                            <div class="item-title">Kayıt Tarihi:</div>
-                            <div class="item-details"><?php echo $kullanicicek['kullanici_zaman'] ?></div>
-                        </div>
-                        <div class="single-item">
-                            <div class="item-title">Puan:</div>
-                            <div class="item-details">
-                                <?php
 
+            <!-- Ust Banner User -->
+            <?php require_once 'user-header.php'; ?>
 
-
-                                $puansay = $db->prepare("SELECT COUNT(yorumlar.yorum_puan) as say, SUM(yorumlar.yorum_puan) as topla, yorumlar.*,urun.* FROM yorumlar INNER JOIN urun 
-                                ON yorumlar.urun_id=urun.urun_id where urun.kullanici_id=:id");
-
-                                $puansay->execute(array(
-
-                                    'id' => $_GET['kullanici_id']
-
-                                ));
-
-                                $puancek = $puansay->fetch(PDO::FETCH_ASSOC);
-
-
-                                $puan = round($puancek['topla'] / $puancek['say']);
-
-                                ?>
-                                <ul class="default-rating">
-
-
-
-                                    <?php
-
-                                    switch ($puan) {
-                                        case '5': ?>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li>(<span> <?php echo $puan ?></span> )</li>
-                                        <?php break;
-                                        case '4': ?>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li>(<span> <?php echo $puan ?></span> )</li>
-
-                                        <?php break;
-                                        case '3': ?>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li>(<span> <?php echo $puan ?></span> )</li>
-
-                                        <?php break;
-                                        case '2': ?>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li>(<span> <?php echo $puan ?></span> )</li>
-
-                                        <?php break;
-                                        case '1': ?>
-                                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li><i style="color:gray" class="fa fa-star" aria-hidden="true"></i></li>
-                                            <li>(<span> <?php echo $puan ?></span> )</li>
-
-                                    <?php break;
-                                    }
-
-                                    ?>
-
-
-
-                                </ul>
-                            </div>
-                        </div>
-                        <div align="center" class="single-item">
-                            <div class="item-title">Toplam Satış:</div>
-                            <div class="item-name">
-
-                                <?php
-                                ///////////////////////////////////////////////////////////////////
-
-
-                                $urunsay = $db->prepare("SELECT COUNT(kullanici_idsatici) as say from siparis_detay where kullanici_idsatici=:id");
-
-                                $urunsay->execute(array(
-
-                                    'id' => $_GET['kullanici_id']
-
-                                ));
-
-                                $saycek = $urunsay->fetch(PDO::FETCH_ASSOC);
-
-
-                                echo $saycek['say'];
-
-                                ?>
-
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Ust Banner User  -->
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 col-lg-pull-9 col-md-pull-8 col-sm-pull-8">
                 <div class="fox-sidebar">
                     <div class="sidebar-item">
@@ -181,6 +59,7 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                                 </div>
                             </div>
                             <ul class="sidebar-badges-item">
+
                                 <?php
 
                                 if ($saycek['say'] >= 1 and $saycek['say'] <= 9) { ?>
@@ -228,7 +107,22 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                         <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
                     </ul>
                     <ul class="sidebar-product-btn">
-                        <li><a href="contact.htm" class="buy-now-btn" id="buy-button"><i class="fa fa-envelope-o" aria-hidden="true"></i> Send Message</a></li>
+                        <?php
+                        if (empty($_SESSION['userkullanici_id'])) { ?>
+
+                            <li><a href="login.php" class="buy-now-btn" id="buy-button"><i class="fa fa-user" aria-hidden="true"></i> Mesaj göndermek için giriş yapın</a></li>
+
+                        <?php } else if ($_SESSION['userkullanici_id'] == $_GET['kullanici_id']) { ?>
+
+                            <li><button disabled class="buy-now-btn" id="buy-button"><i class="fa fa-ban" aria-hidden="true"></i> Mesaj Gönder</button></li>
+
+                        <?php } else { ?>
+
+                            <li><a href="mesaj-gonder.php?kullanici_gel=<?php echo $_GET['kullanici_id']  ?>" class="buy-now-btn" id="buy-button"><i class="fa fa-envelope-o" aria-hidden="true"></i> Mesaj Gönder</a></li>
+
+                        <?php  } ?>
+
+
 
                     </ul>
 
@@ -237,37 +131,9 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
         </div>
         <div class="row profile-wrapper">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <ul class="profile-title">
-                    <li><a href="#Products" data-toggle="tab" aria-expanded="false"><i class="fa fa-briefcase" aria-hidden="true"></i> Ürünleri (
 
+                <?php require_once 'user-sidebar.php'; ?>
 
-                            <?php
-
-
-
-                            $urunsay = $db->prepare("SELECT COUNT(kategori_id) as say from urun where kullanici_id=:id");
-
-                            $urunsay->execute(array(
-
-                                'id' => $kullanicicek['kullanici_id']
-
-                            ));
-
-                            $saycek = $urunsay->fetch(PDO::FETCH_ASSOC);
-
-
-                            echo $saycek['say'];
-
-                            ?>
-
-
-
-
-
-                            )</a></li>
-                    <li><a href="#Message" data-toggle="tab" aria-expanded="false"><i class="fa fa-envelope-o" aria-hidden="true"></i> Menü Adı</a></li>
-
-                </ul>
             </div>
             <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
                 <div class="tab-content">
