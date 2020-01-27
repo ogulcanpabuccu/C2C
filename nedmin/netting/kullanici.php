@@ -3,6 +3,7 @@
 
 ob_start();
 session_start();
+date_default_timezone_set('Europe/Istanbul');
 error_reporting(E_ALL ^ E_NOTICE);
 
 include 'baglan.php';
@@ -115,16 +116,26 @@ if (isset($_POST['musterigiris'])) {
 
 
 
-    $kullanici_mail = htmlspecialchars($_POST['kullanici_mail']);
-    $kullanici_password = md5(htmlspecialchars($_POST['kullanici_password']));
+    require_once '../../securimage/securimage.php';
+
+    $securimage = new Securimage();
+
+    if ($securimage->check($_POST['captcha_code']) == false) {
+
+        header("Location:../../login?durum=captchahata");
+        exit;
+    }
+
+    echo $kullanici_mail = htmlspecialchars($_POST['kullanici_mail']);
+    echo $kullanici_password = md5(htmlspecialchars($_POST['kullanici_password']));
 
 
 
-    $kullanicisor = $db->prepare("SELECT * FROM kullanici WHERE kullanici_mail=:mail AND kullanici_yetki=:yetki AND kullanici_password=:pasword AND kullanici_durum=:durum");
+    $kullanicisor = $db->prepare("select * from kullanici where kullanici_mail=:mail and kullanici_yetki=:yetki and kullanici_password=:password and kullanici_durum=:durum");
     $kullanicisor->execute(array(
         'mail' => $kullanici_mail,
         'yetki' => 1,
-        'pasword' => $kullanici_password,
+        'password' => $kullanici_password,
         'durum' => 1
     ));
 
@@ -135,14 +146,36 @@ if (isset($_POST['musterigiris'])) {
 
     if ($say == 1) {
 
+        $kullanici_ip = $_SERVER['REMOTE_ADDR'];
+
+        $zamanguncelle = $db->prepare("UPDATE kullanici SET
+
+
+			kullanici_sonzaman=:kullanici_sonzaman,
+			kullanici_sonip=:kullanici_sonip
+
+			WHERE kullanici_mail='$kullanici_mail'");
+
+
+        $update = $zamanguncelle->execute(array(
+
+
+            'kullanici_sonzaman' => date("Y-m-d H:i:s"),
+            'kullanici_sonip' => $kullanici_ip
+
+        ));
+
+
+        $_SESSION['userkullanici_sonzaman'] = strtotime(date("Y-m-d H:i:s"));
         $_SESSION['userkullanici_mail'] = $kullanici_mail;
+
 
         header("Location:../../index.php?durum=girisbasarili");
         exit;
     } else {
 
 
-        header("Location:../../login.php?durum=hata");
+        header("Location:../../login?durum=hata");
         exit;
     }
 }

@@ -1,3 +1,15 @@
+<?php
+
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    header("Location:index.php");
+    //exit("Erişim yasak brom napıyon burda");
+}
+
+
+
+?>
+
+
 <form action="arama-detay.php" method="POST">
     <div class="inner-banner-area">
         <div class="container">

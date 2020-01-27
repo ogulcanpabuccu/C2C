@@ -55,7 +55,29 @@ $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC)
                                 </div>
                                 <div class="sidebar-author-content">
                                     <h3><?php echo $kullanicicek['kullanici_ad'] ?></h3>
-                                    <a href="#" class="view-profile"><i class="fa fa-circle" aria-hidden="true"></i>Online</a>
+                                    <?php
+
+
+
+                                    $kullanici_sonzaman = strtotime($kullanicicek['kullanici_sonzaman']);
+
+                                    $suan = time();
+
+                                    echo $fark = ($suan - $kullanici_sonzaman);
+
+                                    if ($fark < 600) { ?>
+
+                                        <a href="#" class="view-profile"><i class="fa fa-circle" aria-hidden="true"></i> online</a>
+
+                                    <?php } else { ?>
+
+
+                                        <a href="#" class="view-profile"><i style="color:red" class="fa fa-circle" aria-hidden="true"></i> offline</a>
+
+                                    <?php }
+                                    ?>
+
+
                                 </div>
                             </div>
                             <ul class="sidebar-badges-item">

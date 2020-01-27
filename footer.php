@@ -1,3 +1,14 @@
+  <?php
+
+    if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+        header("Location:index.php");
+        //exit("Erişim yasak brom napıyon burda");
+    }
+
+
+
+
+    ?>
   <!-- Footer Area Start Here -->
   <footer>
       <div class="footer-area-top">

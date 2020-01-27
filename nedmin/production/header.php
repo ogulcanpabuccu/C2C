@@ -1,36 +1,71 @@
 <?php
 ob_start();
-//session_start();
-error_reporting(E_ALL ^ E_NOTICE);
+session_start();
+date_default_timezone_set('Europe/Istanbul');
 
-include '../netting/baglan.php';
-include 'fonksiyon.php';
+require_once 'nedmin/netting/baglan.php';
+require_once 'nedmin/production/fonksiyon.php';
 
-// Belirli veriyi seçme işlemi
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+
+    exit("Bu sayfaya erişim yasak");
+}
+
+
+
+
+//Ayar Tablosundan Site Ayarlarımızı Çekiyoruz
 $ayarsor = $db->prepare("SELECT * FROM ayar where ayar_id=:id");
 $ayarsor->execute(array(
     'id' => 0
 ));
 $ayarcek = $ayarsor->fetch(PDO::FETCH_ASSOC);
-//Session ile Kullanıcı bilgisi çekme
-$kullanicisor = $db->prepare("SELECT * FROM kullanici where kullanici_mail=:mail");
-$kullanicisor->execute(array(
-    'mail' => $_SESSION['kullanici_mail']
-));
-$say = $kullanicisor->rowCount();
-$kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC);
 
-if ($say == 0) {
+if (isset($_SESSION['userkullanici_mail'])) {
 
-    header("location:login.php?durum=izinsiz");
-    exit;
+
+    $kullanicisor = $db->prepare("SELECT * FROM kullanici where kullanici_mail=:mail");
+    $kullanicisor->execute(array(
+        'mail' => $_SESSION['userkullanici_mail']
+    ));
+    $say = $kullanicisor->rowCount();
+    $kullanicicek = $kullanicisor->fetch(PDO::FETCH_ASSOC);
+
+    //Kullanıcı ID Session Atama
+    if (!isset($_SESSION['userkullanici_id'])) {
+
+        $_SESSION['userkullanici_id'] = $kullanicicek['kullanici_id'];
+    }
 }
 
 
 
 
 
+$kullanici_sonzaman = $_SESSION['userkullanici_sonzaman'];
+$suan = time();
+
+$fark = ($suan - $kullanici_sonzaman);
+
+if ($fark > 600) {
+
+    $zamanguncelle = $db->prepare("UPDATE kullanici SET
+
+        kullanici_sonzaman=:kullanici_sonzaman
+        
+        WHERE kullanici_id={$_SESSION['userkullanici_id']}");
+
+
+    $update = $zamanguncelle->execute(array(
+
+        'kullanici_sonzaman' => date("Y-m-d H:i:s")
+
+    ));
+
+    $kullanici_sonzaman = $_SESSION['userkullanici_sonzaman'];
+}
 ?>
+
 
 
 

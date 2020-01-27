@@ -129,7 +129,7 @@ require_once 'header.php';
 
                                     <div class="single-item-list">
                                         <div class="item-img">
-                                            <img style=" width:238px; height:178px; " src="<?php echo $uruncek['urunfoto_resimyol'] ?>" alt="<?php echo $uruncek['urun_ad'] ?>" class="img-responsive">
+                                            <a href="urun-<?= seo($uruncek['urun_ad']) . "-" . $uruncek['urun_id'];  ?>"><img style=" width:238px; height:178px; " src="<?php echo $uruncek['urunfoto_resimyol'] ?>" alt="<?php echo $uruncek['urun_ad'] ?>" class="img-responsive"></a>
                                             <!-- <div class="trending-sign" data-tips="Trending"><i class="fa fa-bolt" aria-hidden="true"></i></div> -->
                                         </div>
                                         <div class="item-content">

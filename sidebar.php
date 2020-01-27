@@ -1,3 +1,17 @@
+<?php
+
+
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    header("Location:index.php");
+    //exit("Erişim yasak brom napıyon burda");
+}
+
+
+
+
+?>
+
+
 <div class="fox-sidebar">
     <div class="sidebar-item">
         <div class="sidebar-item-inner">

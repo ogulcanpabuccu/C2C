@@ -22,7 +22,7 @@
         <div class="pagination-wrapper">
             <ul>
                 <li><a href="index.php">Anasayfa</a><span> -</span></li>
-                <li>Kayıt</li>
+                <li>Giriş</li>
             </ul>
         </div>
     </div>
@@ -31,7 +31,7 @@
 <!-- Registration Page Area Start Here -->
 <div class="registration-page-area bg-secondary section-space-bottom">
     <div class="container">
-        <h2 class="title-section">Üye Kayıt İşlemleri</h2>
+        <h2 class="title-section">Giriş İşlemleri</h2>
 
         <div class="registration-details-area inner-page-padding">
 
@@ -52,6 +52,12 @@
 
                 <div class="alert alert-success">
                     <strong>Bigi!</strong> Kaydınız Yapıldı giriş yapabilirsiniz.
+                </div>
+
+            <?php } elseif ($_GET['durum'] == "captchahata") { ?>
+
+                <div class="alert alert-danger">
+                    <strong>Hata!</strong> Güvenlik kodu hatalı.
                 </div>
 
             <?php }
@@ -78,17 +84,37 @@
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Güvenlik Kodu *</label>
 
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="pLace-order">
-                            <button name="musterigiris" class="update-btn disabled" type="submit">Giriş</button>
+                            <img src="securimage/securimage_show" id="captcha" alt="CAPTCHA image" />
+                            <a href="#" onclick="document.getElementById('captcha').src='securimage/securimage_show?'+ Math.random(); return false"> [ Değiştir ]</a>
                         </div>
                     </div>
-                </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label" for="first-name">Güvenlik Kodu *</label>
+                                <input type="text" name="captcha_code" required placeholder="Güvenlik kodunu giriniz." class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="pLace-order">
+                                <button name="musterigiris" class="update-btn disabled" type="submit">Giriş</button>
+                            </div>
+                        </div>
+                    </div>
             </form>
         </div>
     </div>
